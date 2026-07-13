@@ -83,14 +83,14 @@ class BaseDocumentLoader:
                 content=ocr_text,
                 source_file=os.path.basename(file_path),
                 file_type="image",
-                extra_meta={"file_path": file_path}
+                extra_meta={"file_path": file_path},
             )
             logger.info(f"Successfully OCR image: {file_path}")
             return [doc]
         except Exception as e:
             logger.error(f"Failed to process image OCR {file_path}: {str(e)}")
             return []
-        
+
     def load_excel(self, file_path: str) -> List[Document]:
         """Parse freight price excel sheets"""
         docs = []
@@ -100,17 +100,49 @@ class BaseDocumentLoader:
                 sheet = workbook[sheet_name]
                 sheet_content = f"SHEET_NAME: {sheet_name}\n"
                 for row in sheet.iter_rows(values_only=True):
-                    row_text = " | ".join([str(cell) for cell in row if cell is not None])
+                    row_text = " | ".join(
+                        [str(cell) for cell in row if cell is not None]
+                    )
                     sheet_content += row_text + "\n"
-                
+
                 doc = Document(
                     content=sheet_content,
                     source_file=os.path.basename(file_path),
                     file_type="excel",
-                    extra_meta={"sheet_name": sheet_name, "file_path": file_path}
+                    extra_meta={"sheet_name": sheet_name, "file_path": file_path},
                 )
                 docs.append(doc)
             logger.info(f"Successfully loaded Excel: {file_path}, sheets: {len(docs)}")
         except Exception as e:
             logger.error(f"Failed to load Excel {file_path}: {str(e)}")
         return docs
+
+    def load_file(self, file_path: str) -> List[Document]:
+        """Dispatch loader based on file extension"""
+        ext = Path(file_path).suffix.lower()
+
+        if ext == ".pdf":
+            return self.load_pdf(file_path)
+        elif ext in [".png", ".jpg", ".jpeg", ".webp"]:
+            return self.load_image_ocr(file_path)
+        elif ext in [".xlsx", ".xls"]:
+            return self.load_excel(file_path)
+        else:
+            logger.warning(f"Unsupported file type: {ext}, skip {file_path}")
+            return []
+
+    def batch_load_folder(self, folder_path: str = None) -> List[Document]:
+        """Batch load all supported documents in target folder"""
+        target_dir = Path(folder_path) if folder_path else self.test_doc_dir
+        all_docs = []
+
+        if not target_dir.exists():
+            logger.warning(f"Folder {target_dir} not found, return empty list")
+            return all_docs
+
+        for file in target_dir.iterdir():
+            if file.is_file():
+                file_docs = self.load_file(str(file))
+                all_docs.extend(file_docs)
+        logger.info(f"Batch load complete, total raw documents: {len(all_docs)}")
+        return all_docs
