@@ -216,3 +216,48 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# ---------------- Custom Rules for Logistics LLM Agent ----------------
+# Local persistent vector database storage
+chroma_db/
+vector_store/
+rag_vector_cache/
+
+# Freight business test materials (price sheets, customs docs, shipment images)
+test_materials/
+*.pdf
+*.xlsx
+*.csv
+*.png
+*.jpg
+*.jpeg
+*.webp
+
+# Runtime log directories
+logs/
+*.log
+runtime_logs/
+langsmith_logs/
+
+# Local LLM embedding / rerank model cache
+~/.cache/ollama/
+~/.cache/huggingface/
+huggingface_models/
+ollama_model_cache/
+
+# Gradio temporary upload cache
+gradio_upload_cache/
+gradio_temp_files/
+
+# Docker temporary build artifacts
+docker/tmp/
+docker/build_cache/
+.dockerignore
+
+# Persistent agent conversation memory
+chat_memory_store/
+session_snapshots/
+
+# Local secret configuration files
+local_config.yaml
+secrets.json
