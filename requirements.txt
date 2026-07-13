@@ -1,0 +1,31 @@
+# Core LLM & Agent Framework
+langchain
+langgraph
+langchain-ollama
+langchain-community
+
+# Vector Database & Retrieval
+chromadb
+rank_bm25
+
+# Document Parsing & OCR
+pypdf
+pdfplumber
+pytesseract
+pillow
+openpyxl
+
+# Data Validation & Structured Output
+pydantic
+python-dotenv
+
+# Frontend UI
+gradio
+
+# Logging & Utils
+python-logging
+tqdm
+
+# Docker & Deployment Tools (optional)
+uvicorn
+fastapi
