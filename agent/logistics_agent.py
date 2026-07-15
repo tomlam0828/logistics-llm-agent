@@ -19,7 +19,7 @@ class LogisticsRAGAgent:
         self.security_filter = PromptSecurityFilter()
         self.retriever = LogisticsHybridRetriever(chunked_docs)
         self.llm = ChatOllama(
-            model=app_config.llm_model_name, temperature=app_config.llm_temperature
+            model=app_config.DEBUG_LLM_MODEL, temperature=app_config.LLM_TEMPERATURE
         )
         self.output_parser = StrOutputParser()
 

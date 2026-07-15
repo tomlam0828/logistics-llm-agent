@@ -26,12 +26,17 @@ class Document:
         extra_meta: Dict[str, Any] = None,
     ):
         self.content = content
-        self.metadata = {
+        self.page_content = content
+        base_meta = {
+            "source": source_file,
             "source_file": source_file,
             "file_type": file_type,
             "page_num": page_num,
-            **(extra_meta or {}),
         }
+
+        if extra_meta:
+            base_meta.update(extra_meta)
+        self.metadata = base_meta
 
 
 class BaseDocumentLoader:
@@ -117,6 +122,23 @@ class BaseDocumentLoader:
             logger.error(f"Failed to load Excel {file_path}: {str(e)}")
         return docs
 
+    def load_txt(self, file_path: str) -> List[Document]:
+        """Parse plain text freight price document"""
+        try:
+            with open(file_path, "r", encoding="utf-8") as f:
+                txt_content = f.read()
+            doc = Document(
+                content=txt_content,
+                source_file=os.path.basename(file_path),
+                file_type="txt",
+                extra_meta={"file_path": file_path},
+            )
+            logger.info(f"Successfully loaded TXT file: {file_path}")
+            return [doc]
+        except Exception as e:
+            logger.error(f"Failed to process TXT file {file_path}: {str(e)}")
+            return []
+
     def load_file(self, file_path: str) -> List[Document]:
         """Dispatch loader based on file extension"""
         ext = Path(file_path).suffix.lower()
@@ -127,6 +149,8 @@ class BaseDocumentLoader:
             return self.load_image_ocr(file_path)
         elif ext in [".xlsx", ".xls"]:
             return self.load_excel(file_path)
+        elif ext == ".txt":
+            return self.load_txt(file_path)
         else:
             logger.warning(f"Unsupported file type: {ext}, skip {file_path}")
             return []

@@ -9,5 +9,6 @@ dependencies = [
     "chromadb>=1.5.9",
     "isort>=8.0.1",
     "langchain-chroma>=1.1.0",
+    "langchain-ollama>=1.1.0",
     "langchain-text-splitters>=1.1.2",
 ]

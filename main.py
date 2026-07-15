@@ -1,7 +1,6 @@
 from langchain.tools import tool
 
-from document_loader.base_loader import Document
-from document_loader.base_loader import load_all_files
+from document_loader.base_loader import Document, BaseDocumentLoader
 from retriever.hybrid_retriever import LogisticsHybridRetriever
 from agent.logistics_agent import LogisticsRAGAgent
 from utils.logger import get_logger
@@ -33,7 +32,8 @@ def init_rag_system():
     if global_rag_agent is not None:
         return global_rag_agent
 
-    raw_docs: list[Document] = load_all_files("./data")
+    loader = BaseDocumentLoader()
+    raw_docs: list[Document] = loader.batch_load_folder("./data")
     logger.info(f"Loaded total {len(raw_docs)} document chunks")
 
     global_rag_agent = LogisticsRAGAgent(raw_docs)

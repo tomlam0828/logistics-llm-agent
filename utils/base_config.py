@@ -14,6 +14,7 @@ class AppConfig:
     DEBUG_LLM_MODEL: str = os.getenv("DEBUG_LLM_MODEL")
     LIGHT_DEV_LLM_MODEL: str = os.getenv("LIGHT_DEV_LLM_MODEL")
     SHOWCASE_LLM_MODEL: str = os.getenv("SHOWCASE_LLM_MODEL")
+    LLM_TEMPERATURE: str = os.getenv("LLM_TEMPERATURE")
 
     # Retrieval Models
     EMBEDDING_MODEL: str = os.getenv("EMBEDDING_MODEL")
@@ -39,6 +40,7 @@ class AppConfig:
             "LOG_SAVE_PATH": cls.LOG_SAVE_PATH,
             "TEST_DOCUMENT_FOLDER": cls.TEST_DOCUMENT_FOLDER,
             "CHAT_SESSION_STORAGE": cls.CHAT_SESSION_STORAGE,
+            "LLM_TEMPERATURE": cls.LLM_TEMPERATURE,
         }
 
 
