@@ -1,0 +1,32 @@
+Land Freight Rate: Los Angeles Port to New York
+1. Weight tier 0kg - 500kg
+Base shipping cost: 1100 USD per shipment
+Fixed fuel surcharge: 120 USD
+One-time customs clearance fee: 80 USD
+
+2. Weight tier 500kg - 2000kg
+Base shipping cost: 1850 USD per shipment
+Fixed fuel surcharge: 120 USD
+One-time customs clearance fee: 80 USD
+
+3. Weight tier over 2000kg
+Base shipping cost: 2600 USD per shipment
+Fuel surcharge: 200 USD
+Custom clearance fee: 120 USD
+
+Policy Note: All fuel surcharges adjust on the first day of each month according to international crude oil prices.
+All rates only apply to domestic US land trucking transport.
+
+------------------------------------------------------------------------
+Ocean Freight Rate: Los Angeles Port to Toronto
+1. Weight tier 0kg - 500kg
+Base ocean freight: 950 USD
+Port handling fee: 75 USD
+Security surcharge: 50 USD
+
+2. Weight tier 500kg - 2000kg
+Base ocean freight: 1600 USD
+Port handling fee: 75 USD
+Security surcharge: 50 USD
+
+Policy Note: Ocean shipments need extra 3-7 working days for customs inspection at Canadian border.
