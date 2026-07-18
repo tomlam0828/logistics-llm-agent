@@ -19,6 +19,8 @@ class AppConfig:
     # Retrieval Models
     EMBEDDING_MODEL: str = os.getenv("EMBEDDING_MODEL")
     RERANK_MODEL: str = os.getenv("RERANK_MODEL")
+    RERANK_TOP_N: str = os.getenv("RERANK_TOP_N")
+    
 
     # Persistent Storage Paths
     CHROMA_STORAGE_PATH: str = os.getenv("CHROMA_STORAGE_PATH")
@@ -36,6 +38,7 @@ class AppConfig:
             "SHOWCASE_LLM_MODEL": cls.SHOWCASE_LLM_MODEL,
             "EMBEDDING_MODEL": cls.EMBEDDING_MODEL,
             "RERANK_MODEL": cls.RERANK_MODEL,
+            "RERANK_TOP_N": cls.RERANK_TOP_N,
             "CHROMA_STORAGE_PATH": cls.CHROMA_STORAGE_PATH,
             "LOG_SAVE_PATH": cls.LOG_SAVE_PATH,
             "TEST_DOCUMENT_FOLDER": cls.TEST_DOCUMENT_FOLDER,
