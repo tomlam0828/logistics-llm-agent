@@ -1,14 +1,13 @@
 from typing import List
 
-import chromadb
-from langchain_ollama import OllamaEmbeddings
 from langchain_chroma import Chroma
 from langchain_community.retrievers import BM25Retriever
-from retriever.reranker import FreightReranker
+from langchain_ollama import OllamaEmbeddings
 
 from document_loader.base_loader import Document
 from preprocessor.prompt_sanitizer import PromptSecurityFilter
 from preprocessor.text_splitter import DocumentSplitter
+from retriever.reranker import FreightReranker
 from utils.base_config import app_config
 from utils.logger import get_logger
 
@@ -39,7 +38,7 @@ class LogisticsHybridRetriever:
         # Build BM25 keyword retriever
         self.bm25_retriever = BM25Retriever.from_documents(lc_docs)
         self.bm25_retriever.k = 4
-        
+
         self.reranker = FreightReranker()
 
     def _convert_to_langchain_docs(self, custom_docs):
@@ -76,13 +75,13 @@ class LogisticsHybridRetriever:
         vector_hits = self.vector_retriever.invoke(safe_input)
         bm25_hits = self.bm25_retriever.invoke(safe_input)
         combined = self._merge_and_deduplicate(vector_hits, bm25_hits)
-    
+
         logger.info(
             f"Vector hits: {len(vector_hits)}, BM25 hits: {len(bm25_hits)}, unique merged chunks: {len(combined)}"
         )
-        
+
         # Rerank to filter irrelevant chunks
         final_docs = self.reranker.rerank_docs(user_query, combined)
         logger.info(f"After rerank, reserved top {len(final_docs)} relevant chunks")
-        
+
         return final_docs

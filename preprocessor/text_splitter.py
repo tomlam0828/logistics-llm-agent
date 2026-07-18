@@ -1,5 +1,7 @@
 from typing import List
+
 from langchain_text_splitters import RecursiveCharacterTextSplitter
+
 from document_loader.base_loader import Document
 from utils.logger import get_logger
 

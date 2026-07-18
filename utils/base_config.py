@@ -20,7 +20,6 @@ class AppConfig:
     EMBEDDING_MODEL: str = os.getenv("EMBEDDING_MODEL")
     RERANK_MODEL: str = os.getenv("RERANK_MODEL")
     RERANK_TOP_N: str = os.getenv("RERANK_TOP_N")
-    
 
     # Persistent Storage Paths
     CHROMA_STORAGE_PATH: str = os.getenv("CHROMA_STORAGE_PATH")

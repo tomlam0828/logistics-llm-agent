@@ -1,13 +1,15 @@
 from typing import List
-from langchain_core.prompts import ChatPromptTemplate
+
 from langchain_core.output_parsers import StrOutputParser
+from langchain_core.prompts import ChatPromptTemplate
 from langchain_ollama import ChatOllama
 
-from retriever.hybrid_retriever import LogisticsHybridRetriever
-from preprocessor.prompt_sanitizer import PromptSecurityFilter
 from document_loader.base_loader import Document
+from preprocessor.prompt_sanitizer import PromptSecurityFilter
+from retriever.hybrid_retriever import LogisticsHybridRetriever
 from utils.base_config import app_config
 from utils.logger import get_logger
+from utils.prompt_loader import load_prompt_template
 
 logger = get_logger("logistics_agent")
 
@@ -23,22 +25,14 @@ class LogisticsRAGAgent:
         )
         self.output_parser = StrOutputParser()
 
+        # Load prompt from external file instead of hardcode
+        system_prompt = load_prompt_template("system_rag.txt")
+        self.no_data_msg = load_prompt_template("no_data_response.txt")
+
         # Custom system prompt for freight business
         prompt_template = ChatPromptTemplate.from_messages(
             [
-                (
-                    "system",
-                    """
-You are a professional freight forwarding assistant.
-Answer user questions strictly based on the provided reference freight documents.
-Rules:
-1. Do not fabricate any shipping prices, port surcharges or weight tiers not in context.
-2. If the reference has no matching information, clearly tell the user you cannot find relevant freight data.
-3. Keep answers concise, sorted by port, weight and cost clearly.
-4. Never output complete confidential price tables in full.
-Reference context: {context}
-            """,
-                ),
+                ("system", system_prompt),
                 ("human", "{user_query}"),
             ]
         )
@@ -58,7 +52,7 @@ Reference context: {context}
         # Step 2 hybrid retrieval get relevant chunks
         relevant_docs = self.retriever.retrieve_raw(safe_text)
         if not relevant_docs:
-            return "No matching freight document information found."
+            return self.no_data_msg
 
         # Combine all retrieved chunks into one context string
         context_text = "\n\n".join([doc.page_content for doc in relevant_docs])

@@ -1,8 +1,8 @@
 from langchain.tools import tool
 
-from document_loader.base_loader import Document, BaseDocumentLoader
-from retriever.hybrid_retriever import LogisticsHybridRetriever
 from agent.logistics_agent import LogisticsRAGAgent
+from document_loader.base_loader import BaseDocumentLoader, Document
+from retriever.hybrid_retriever import LogisticsHybridRetriever
 from utils.logger import get_logger
 
 logger = get_logger("main")
